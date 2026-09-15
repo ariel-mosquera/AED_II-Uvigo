@@ -38,8 +38,10 @@ public class Activity1 {
    * @return el factorial de number.
    */
   public static long factorial(int number) {
-    // TODO: Implementa el cálculo del factorial de number de forma recursiva
-    return 0;
+    if (number == 0)
+      return 1;
+
+    return number * factorial(number - 1);
   }
 
   /**
@@ -49,8 +51,10 @@ public class Activity1 {
    * @return el cuadrado de number.
    */
   public static int square(int number) {
-    // TODO: Implementa el cálculo recursivo del cuadrado de number
-    return 0;
+    if (number == 0)
+      return 0;
+
+    return square(number - 1) + (2 * number) - 1;
   }
 
   /**
@@ -60,8 +64,10 @@ public class Activity1 {
    * @return la suma de los dígitos de number.
    */
   public static int sumDigits(int number) {
-    // TODO: Implementa la suma recursiva de los dígitos de number
-    return 0;
+    if (number < 10)
+      return number;
+
+    return (number % 10) + sumDigits(number / 10);
   }
 
   /**
@@ -72,8 +78,19 @@ public class Activity1 {
    * @return el MCD de number1 y number2
    */
   public static int mcd(int number1, int number2) {
-    // TODO: Implementa el cálculo recursivo del MCD de number1 y number2
-    return 0;
+    if (number1 == 0)
+      return number2;
+
+    if (number2 == 0)
+      return number1;
+
+    if (number1 > number2)
+      return mcd((number1 - number2), number2);
+
+    if (number1 < number2)
+      return mcd(number1, (number2 - number1));
+
+    return number1;
   }
 
   /**
@@ -81,10 +98,12 @@ public class Activity1 {
    *
    * @param str String usado para invertir caracteres.
    * @return el string invertido.
-    */
+   */
   public static String invert(String str) {
-    // TODO: Implementa la inversión recursiva de un String
-    return null;
+    if (str.length() == 1)
+      return str;
+
+    return str.charAt(str.length() - 1) + invert(str.substring(0, str.length() - 1));
   }
 
   /**
@@ -133,7 +152,7 @@ public class Activity1 {
   /**
    * exercise 10
    *
-   * @param <T> Tipo de los elementos contenidos en el Stack.
+   * @param <T>   Tipo de los elementos contenidos en el Stack.
    * @param stack la pila a copiar.
    * @return una nueva pila con los mismos elementos que la original.
    */
