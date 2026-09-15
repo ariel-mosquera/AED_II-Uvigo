@@ -42,7 +42,6 @@ public class DynamicProgrammingAlgorithmTestCase {
 
   private final DynamicProgrammingRepository dataPD = new DynamicProgrammingRepository();
 
-
   /**
    * Test of giveChangeDinamic method, of class DinamicProgramingAlgorithm.
    */

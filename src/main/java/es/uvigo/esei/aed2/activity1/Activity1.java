@@ -113,8 +113,14 @@ public class Activity1 {
    * @return suma todos los valores del array.
    */
   public static int addValues(int[] values) {
-    // TODO: Implementa la suma recursiva de los valores de un array
-    return 0;
+    return addValues(values, values.length - 1);
+  }
+
+  private static int addValues(int[] values, int lastPos) {
+    if (lastPos == 0)
+      return values[0];
+
+    return values[lastPos] + addValues(values, lastPos - 1);
   }
 
   /**
@@ -123,7 +129,17 @@ public class Activity1 {
    * @param values array usado para el proceso de inversion.
    */
   public static void invertArray(int[] values) {
-    // TODO: Implementa la inversión recursiva de un array
+    invertArray(values, 0, values.length - 1);
+  }
+
+  private static void invertArray(int[] values, int start, int end) {
+    if (start < end) {
+      int temp = values[start];
+      values[start] = values[end];
+      values[end] = temp;
+
+      invertArray(values, start + 1, end - 1);
+    }
   }
 
   /**
