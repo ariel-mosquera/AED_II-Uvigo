@@ -62,7 +62,7 @@ public class LinkedBinaryTree<T> implements BinaryTree<T> {
         tree.hasRightChild() ? buildNodeFromTree(tree.getRightChild()) : null);
   }
 
-  private LinkedBinaryTree(LinkedBinaryTreeNode<T> root) {
+  private LinkedBinaryTree(LinkedBinaryTreeNode<T> root) { // permite a partir de un nodo, crear un árbol
     rootNode = root;
   }
 
@@ -100,7 +100,7 @@ public class LinkedBinaryTree<T> implements BinaryTree<T> {
 
   @Override
   public boolean hasLeftChild() {
-    return rootNode.hasLeftNode();
+    return !isEmpty() && rootNode.hasLeftNode();
   }
 
   @Override
@@ -108,10 +108,10 @@ public class LinkedBinaryTree<T> implements BinaryTree<T> {
     if (isEmpty())
       throw new EmptyTreeException();
 
-    if (!hasLeftChild())
-      return new LinkedBinaryTree<>();
+    if (hasLeftChild())
+      return new LinkedBinaryTree<>(rootNode.getLeftNode());
 
-      return new LinkedBinaryTree()
+    return new LinkedBinaryTree<>();
   }
 
   @Override
