@@ -3,7 +3,8 @@ package es.uvigo.esei.aed2.activity3.implementation;
  * #%L
  * AEDII - Activities
  * %%
- * Copyright (C) 2025 Rosalía Laza Fidalgo, María Reyes Pavón Rial,
+import java.util.function.Consumer;
+import static java.util.Objects.requireNonNull;
  * Florentino Fernández Riverola, María Novo Lourés, and Miguel Reboiro Jato
  * %%
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,8 +27,9 @@ package es.uvigo.esei.aed2.activity3.implementation;
  * #L%
  */
 
-
 import java.util.function.Consumer;
+
+import static java.util.Objects.requireNonNull;
 
 import es.uvigo.esei.aed2.tree.binary.BinaryTree;
 import es.uvigo.esei.aed2.tree.exceptions.EmptyTreeException;
@@ -37,42 +39,79 @@ public class LinkedBinaryTree<T> implements BinaryTree<T> {
   private LinkedBinaryTreeNode<T> rootNode;
 
   public LinkedBinaryTree() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    rootNode = null;
   }
 
   public LinkedBinaryTree(T value) throws NullPointerException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    this(new LinkedBinaryTreeNode<>(requireNonNull(value, "Null values are not allowed!")));
   }
 
-  public LinkedBinaryTree(T value, BinaryTree<T> leftChild, BinaryTree<T> rightChild)
-  throws NullPointerException {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public LinkedBinaryTree(T value, BinaryTree<T> leftChild, BinaryTree<T> rightChild) throws NullPointerException {
+    requireNonNull(value, "Null values are not allowed!");
+
+    rootNode = new LinkedBinaryTreeNode<>(value, buildNodeFromTree(leftChild), buildNodeFromTree(rightChild));
+  }
+
+  private static <T> LinkedBinaryTreeNode<T> buildNodeFromTree(BinaryTree<T> tree) {
+    if (tree.isEmpty())
+      return null;
+
+    return new LinkedBinaryTreeNode<T>(
+        tree.getRootValue(),
+        tree.hasLeftChild() ? buildNodeFromTree(tree.getLeftChild()) : null,
+        tree.hasRightChild() ? buildNodeFromTree(tree.getRightChild()) : null);
+  }
+
+  private LinkedBinaryTree(LinkedBinaryTreeNode<T> root) {
+    rootNode = root;
   }
 
   // Métodos lanzan excepción
   @Override
   public T getRootValue() throws EmptyTreeException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (this.isEmpty())
+      throw new EmptyTreeException("The tree is empty, impossible to get a value");
+
+    return rootNode.getValue();
   }
 
   @Override
   public void setRootValue(T value) throws EmptyTreeException, NullPointerException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (this.isEmpty())
+      throw new EmptyTreeException("The tree is empty, impossible to set value");
+
+    requireNonNull(value, "Null values are not allowed");
+
+    rootNode.setValue(value);
   }
 
   @Override
   public boolean contains(T value) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return contains(rootNode, value);
+  }
+
+  private boolean contains(LinkedBinaryTreeNode<T> parent, T value) {
+    if (parent == null)
+      return false;
+
+    return parent.getValue().equals(value) || contains(parent.getLeftNode(), value)
+        || contains(parent.getRightNode(), value);
   }
 
   @Override
   public boolean hasLeftChild() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return rootNode.hasLeftNode();
   }
 
   @Override
   public BinaryTree<T> getLeftChild() throws EmptyTreeException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (isEmpty())
+      throw new EmptyTreeException();
+
+    if (!hasLeftChild())
+      return new LinkedBinaryTree<>();
+
+      return new LinkedBinaryTree()
   }
 
   @Override
@@ -104,35 +143,35 @@ public class LinkedBinaryTree<T> implements BinaryTree<T> {
   public void removeRightChild() throws EmptyTreeException {
     throw new UnsupportedOperationException("Not supported yet.");
   }
-  
+
   @Override
   public void clear() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    rootNode = null;
   }
 
   @Override
   public boolean isEmpty() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return rootNode == null;
   }
 
   @Override
   public void forEachInOrder(Consumer<T> action) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
-  
+
   @Override
   public void forEachPreOrder(Consumer<T> action) {
     throw new UnsupportedOperationException("Not supported yet.");
-  } 
+  }
 
   @Override
   public void forEachPostOrder(Consumer<T> action) {
     throw new UnsupportedOperationException("Not supported yet.");
-  } 
+  }
 
   @Override
   public void forEachLevelOrder(Consumer<T> action) {
     throw new UnsupportedOperationException("Not supported yet.");
-  }
 
+  }
 }

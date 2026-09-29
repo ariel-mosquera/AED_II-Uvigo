@@ -121,7 +121,7 @@ public class Activity1TestCase {
   @Test
   public void testAddValues() {
     int[] values = {
-      2, 4, 6, 8
+        2, 4, 6, 8
     };
     int expResult = 20;
     int result = Activity1.addValues(values);
@@ -135,10 +135,10 @@ public class Activity1TestCase {
   @Test
   public void testInvertArray() {
     int[] values = {
-      2, 4, 6, 8
+        2, 4, 6, 8
     };
     int[] expResult = {
-      8, 6, 4, 2
+        8, 6, 4, 2
     };
     Activity1.invertArray(values);
 
@@ -151,7 +151,7 @@ public class Activity1TestCase {
   @Test
   public void testMinimum() {
     int[] values = {
-      4, 3, 6, 2, 8
+        4, 3, 6, 2, 8
     };
     int expResult = 2;
     int result = Activity1.minimum(values);
@@ -165,10 +165,20 @@ public class Activity1TestCase {
   @Test
   public void testBinarySearch() {
     double[] values = {
-      1.1, 2.2, 3.3, 4.4, 5.5
+        1.1, 2.2, 3.3, 4.4, 5.5
     };
     double number = 3.3;
     int expResult = 2;
+    int result = Activity1.binarySearch(values, number);
+
+    assertEquals(expResult, result);
+  }
+
+  @Test
+  public void testBinarySearchOneElement() {
+    double[] values = { 1.1 };
+    double number = 0.2;
+    int expResult = -1;
     int result = Activity1.binarySearch(values, number);
 
     assertEquals(expResult, result);
@@ -181,7 +191,7 @@ public class Activity1TestCase {
   public void testCopyStack() {
     Stack<String> expResult = new Stack<>();
     expResult.addAll(Arrays.asList(new String[] {
-      "AEDII", "Actividad", "Uno"
+        "AEDII", "Actividad", "Uno"
     }));
     Stack<String> result = Activity1.copyStack(expResult);
 

@@ -149,7 +149,10 @@ public class Activity1 {
    * @return el menor entero del array.
    */
   public static int minimum(int[] values) {
-    // TODO: Implementa la búsqueda recursiva del menor valor de un array
+    return 0;
+  }
+
+  private static int minimum(int[] values, int start, int end) {
     return 0;
   }
 
@@ -161,8 +164,24 @@ public class Activity1 {
    * @return el indice de number en el array o -1 si no está.
    */
   public static int binarySearch(double[] values, double number) {
-    // TODO: Implementa la búsqueda binaria recursiva en un array
-    return -1;
+    return binarySearch(values, number, 0, values.length - 1);
+  }
+
+  private static int binarySearch(double[] values, double number, int start, int end) {
+    if (start > end)
+      return -1;
+
+    int middle = (start + end) / 2;
+
+    if (values[middle] > number) {
+      return binarySearch(values, number, start, middle - 1);
+
+    } else if (values[middle] < number) {
+      return binarySearch(values, number, middle + 1, end);
+
+    } else {
+      return middle;
+    }
   }
 
   /**
