@@ -28,6 +28,8 @@ package es.uvigo.esei.aed2.activity4;
  */
 
 import java.util.ArrayList;
+import static java.util.Objects.requireNonNull;
+import static java.util.Collections.swap;
 
 public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
 
@@ -42,12 +44,12 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
   /**
    * Comprueba si el heap está vacío.
    *
-   * @return <code>true</code> cuando el heap está vacío y <code>false</code> en
-   * caso contrario.
+   * @return {@code true} cuando el heap está vacío y {@code false} en
+   *         caso contrario.
    */
   @Override
   public boolean isEmpty() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return arrayHeap.size() == 1;
   }
 
   /**
@@ -58,7 +60,7 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
    */
   @Override
   public T getMaxValue() throws HeapEmptyException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return arrayHeap.get(1);
   }
 
   /**
@@ -69,28 +71,61 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
    */
   @Override
   public T removeMaxValue() throws HeapEmptyException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (isEmpty())
+      throw new HeapEmptyException("The heap doesn't have any values");
+
+    T toRet = getMaxValue();
+    T lastValue = arrayHeap.removeLast();
+
+    if (!isEmpty()) {
+      arrayHeap.set(1, lastValue);
+      sink(1);
+    }
+
+    return toRet;
   }
 
   /**
-   * Mueve el elemento en la posición {@code hollow} hacia arriba en el heap
-   * hasta que se cumpla la propiedad de ordenación.
+   * Mueve el elemento en la posición {@code hollow} hacia abajo en el heap hasta
+   * que se cumpla la propiedad de ordenación.
    *
    * @param hollow la posición del elemento a mover.
    */
   private void sink(int hollow) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    int parent = hollow;
+    int child = hollow * 2;
+    int last = arrayHeap.size() - 1;
+
+    while (child <= last) {
+      if (child + 1 <= last && arrayHeap.get(child + 1).compareTo(arrayHeap.get(child)) > 0) {
+        child++;
+      }
+
+      if (arrayHeap.get(child).compareTo(arrayHeap.get(parent)) > 0) {
+        swap(arrayHeap, child, parent);
+        parent = child;
+        child = parent * 2;
+      } else {
+        break;
+      }
+    }
   }
 
   /**
    * Añade un valor al heap.
    *
    * @param value el elemento a añadir.
-   * @throws NullPointerException si el valor es <code>null</code>.
+   * @throws NullPointerException si el valor es {@code null}.
    */
   @Override
   public void add(T value) throws NullPointerException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    arrayHeap.add(requireNonNull(value, "Null values are not allowed!"));
+
+    int i = arrayHeap.size() - 1;
+    while ((i > 1) && (arrayHeap.get(i / 2).compareTo(arrayHeap.get(i)) < 0)) {
+      swap(arrayHeap, i, i / 2);
+      i /= 2;
+    }
   }
 
   /**
@@ -98,18 +133,19 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
    */
   @Override
   public void clear() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    arrayHeap.clear();
+    arrayHeap.add(null);
   }
 
   /**
    * Añade un valor al heap sin mantener la propiedad de ordenacion
    *
    * @param value el elemento a añadir
-   * @throws NullPointerException si el valor es <code>null</code>
+   * @throws NullPointerException si el valor es {@code null}
    */
   @Override
   public void insert(T value) throws NullPointerException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    arrayHeap.add(requireNonNull(value, "Null values are not allowed!"));
   }
 
   /**
@@ -119,5 +155,4 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
   public void orderHeap() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
-
 }
