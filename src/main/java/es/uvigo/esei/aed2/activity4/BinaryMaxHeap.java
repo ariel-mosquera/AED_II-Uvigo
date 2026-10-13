@@ -60,6 +60,9 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
    */
   @Override
   public T getMaxValue() throws HeapEmptyException {
+    if (isEmpty())
+      throw new HeapEmptyException("The heap is empty, impossible to get max. value!");
+
     return arrayHeap.get(1);
   }
 
@@ -95,8 +98,9 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
     int parent = hollow;
     int child = hollow * 2;
     int last = arrayHeap.size() - 1;
+    boolean end = false;
 
-    while (child <= last) {
+    while (child <= last && !end) {
       if (child + 1 <= last && arrayHeap.get(child + 1).compareTo(arrayHeap.get(child)) > 0) {
         child++;
       }
@@ -106,7 +110,7 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
         parent = child;
         child = parent * 2;
       } else {
-        break;
+        end = true;
       }
     }
   }
@@ -153,6 +157,8 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
    */
   @Override
   public void orderHeap() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    for (int i = (arrayHeap.size() - 1) / 2; i > 0; i--) {
+      sink(i);
+    }
   }
 }

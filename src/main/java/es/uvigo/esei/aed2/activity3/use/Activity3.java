@@ -34,9 +34,10 @@ import java.util.List;
 public class Activity3 {
   // exercise a)
   public static <T> T getParent(BinaryTree<T> tree, T value) {
-    if (tree.isEmpty() || (!tree.hasLeftChild() && !tree.hasRightChild())) return null;
-    
-    //TODO: Terminar de implementar el método
+    if (tree.isEmpty() || (!tree.hasLeftChild() && !tree.hasRightChild()))
+      return null;
+    // TODO: Terminar de implementar el método
+    return null;
   }
 
   // exercise b)
@@ -45,16 +46,22 @@ public class Activity3 {
   }
 
   // exercise c)
-  public static List<Integer> listEvenValues (BinaryTree<Integer> tree){
+  public static List<Integer> listEvenValues(BinaryTree<Integer> tree) {
     List<Integer> evenNumbers = new LinkedList<>();
 
-    tree.forEachPreOrder(n -> { if (n % 2 == 0) evenNumbers.addLast(n);});
+    tree.forEachPreOrder(n -> {
+      if (n % 2 == 0)
+        evenNumbers.addLast(n);
+    });
 
     return evenNumbers;
   }
 
   // exercise d)
-  public static void printValuesHigherThan30 (BinaryTree<Integer> tree){
-    tree.forEachLevelOrder(n -> {if (n > 30) System.out.println();});
+  public static void printValuesHigherThan30(BinaryTree<Integer> tree) {
+    tree.forEachLevelOrder(n -> {
+      if (n > 30)
+        System.out.println();
+    });
   }
 }
