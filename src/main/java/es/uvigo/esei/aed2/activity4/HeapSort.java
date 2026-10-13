@@ -33,6 +33,17 @@ public class HeapSort {
    * @param values the array of integers to be sorted.
    */
   public static void heapSort(int[] values) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    BinaryMaxHeap<Integer> heap = new BinaryMaxHeap<>();
+
+    for (int i : values) {
+      heap.insert(i);
+    }
+
+    heap.orderHeap();
+
+    int k = 0;
+    while (!heap.isEmpty()) {
+      values[k++] = heap.removeMaxValue();
+    }
   }
 }
