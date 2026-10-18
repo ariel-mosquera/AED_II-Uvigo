@@ -95,7 +95,6 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
    * @param hollow la posición del elemento a mover.
    */
   private void sink(int hollow) {
-    int parent = hollow;
     int child = hollow * 2;
     int last = arrayHeap.size() - 1;
     boolean end = false;
@@ -105,10 +104,10 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
         child++;
       }
 
-      if (arrayHeap.get(child).compareTo(arrayHeap.get(parent)) > 0) {
-        swap(arrayHeap, child, parent);
-        parent = child;
-        child = parent * 2;
+      if (arrayHeap.get(child).compareTo(arrayHeap.get(hollow)) > 0) {
+        swap(arrayHeap, child, hollow);
+        hollow = child;
+        child = hollow * 2;
       } else {
         end = true;
       }

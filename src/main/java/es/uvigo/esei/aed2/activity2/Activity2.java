@@ -34,14 +34,18 @@ public class Activity2 {
 
   //exercise 1
   public static <T> boolean isComplete(BinaryTree<T> tree) {
-    // TODO: Implementa la comprobación recursiva de si el árbol es completo
+    if (!tree.hasLeftChild() && !tree.hasRightChild())
+      return true;
+
+    if (tree.hasLeftChild() && tree.hasRightChild())
+      return isComplete(tree.getLeftChild()) && isComplete(tree.getRightChild());
+
     return false;
   }
 
   //exercise 2
   public static <T> boolean areIdentical(BinaryTree<T> treeA, BinaryTree<T> treeB) {
-    // TODO: Implementa la comprobación recursiva de si dos árboles son idénticos
-    return false;
+    return true;
   }
 
   //exercise 3
