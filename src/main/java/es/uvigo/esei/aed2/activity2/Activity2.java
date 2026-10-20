@@ -43,56 +43,159 @@ public class Activity2 {
     return false;
   }
 
-  //exercise 2
+  // exercise 2
   public static <T> boolean areIdentical(BinaryTree<T> treeA, BinaryTree<T> treeB) {
-    return true;
+    if (treeA.isEmpty() && treeB.isEmpty()) {
+      return true;
+    }
+
+    if (treeA.isEmpty() || treeB.isEmpty()) {
+      return false;
+    }
+
+    if (!treeA.getRootValue().equals(treeB.getRootValue())){
+      return false;
+    }
+
+    return areIdentical(treeA.getLeftChild(), treeB.getLeftChild()) && areIdentical(treeA.getRightChild(), treeB.getRightChild());
   }
 
   //exercise 3
   public static <T> int countNodesInLevel(BinaryTree<T> tree, int level) {
-    // TODO: Implementa el conteo recursivo de nodos en un nivel dado
-    return 0;
+    if (tree.isEmpty() || level < 0)
+      return 0;
+
+    if (level == 0)
+      return 1;
+
+    return countNodesInLevel(tree.getLeftChild(), level - 1) + countNodesInLevel(tree.getRightChild(), level - 1);
   }
+  
+  // private static <T> int countNodesInLevel(BinaryTree<T> tree, int level, int currLevel) {
+  //   if (tree.isEmpty())
+  //     return 0;
+
+  //   if (currLevel == level)
+  //     return 1;
+
+  //   return countNodesInLevel(tree.getLeftChild(), level, currLevel + 1) + countNodesInLevel(tree.getRightChild(), level, currLevel + 1);
+  // }
 
   //exercise 4
   public static <T> BinaryTree<T> removeLeaves(BinaryTree<T> tree) {
-    // TODO: Implementa la eliminación recursiva de las hojas de un árbol
-    return new LinkedBinaryTree<>();
+    if (tree.isEmpty() || (!tree.hasLeftChild() && !tree.hasRightChild())){
+      return new LinkedBinaryTree<>();
+    }
+
+    BinaryTree<T> newTree = new LinkedBinaryTree<>(tree.getRootValue());
+
+    newTree.setLeftChild(removeLeaves(tree.getLeftChild()));
+    newTree.setRightChild(removeLeaves(tree.getRightChild()));
+
+    return newTree;
   }
 
   //exercise 5
   public static <T> int calculateHeight(BinaryTree<T> tree) {
-    // TODO: Implementa el cálculo recursivo de la altura de un árbol
-    return -1;
+    if (tree.isEmpty())
+      return -1;
+
+   int leftTreeHeight = calculateHeight(tree.getLeftChild()) + 1;
+   int rightTreeHeight = calculateHeight(tree.getRightChild()) + 1;
+    
+    return leftTreeHeight > rightTreeHeight? leftTreeHeight : rightTreeHeight;
   }
 
   //exercise 6
   public static BinaryTree<String> rebuild(String preorder, String inorder) {
-    // TODO: Implementa la reconstrucción recursiva de un árbol binario a partir de los recorridos preorder e inorder
-    return new LinkedBinaryTree<>();
+    if (preorder.isEmpty() || inorder.isEmpty())
+      return new LinkedBinaryTree<>();
+
+    BinaryTree<String> newTree = new LinkedBinaryTree<>(String.valueOf(preorder.charAt(0)));
+    int rootIndexInorder = inorder.indexOf(preorder.charAt(0));
+    
+    if (rootIndexInorder > 0) { //has left child
+
+    }
+
+    if (rootIndexInorder + 1
+      
+    )
+
+    return newTree;
   }
 
   //exercise 7
   public static <T extends Comparable<T>> boolean isSelectionTree(BinaryTree<T> tree) {
-    // TODO: Implementa la comprobación recursiva de si el árbol es un árbol de selección
-    return false;
+    if (tree.isEmpty()) {
+      return true;
+    }
+
+    if (tree.hasLeftChild() ^ tree.hasRightChild()) {
+      return false;
+    }
+
+    if (tree.hasLeftChild() && tree.hasRightChild()) {
+      T leftValue = tree.getLeftChild().getRootValue();
+      T rightValue = tree.getRightChild().getRootValue();
+      T smaller = leftValue.compareTo(rightValue) < 0 ? leftValue : rightValue;
+      
+      if (tree.getRootValue().compareTo(smaller) == 0) {
+        return isSelectionTree(tree.getLeftChild()) && isSelectionTree(tree.getRightChild());
+      }
+      else
+        return false;
+    }
+
+    return true;
   }
 
   //exercise 8
   public static <T> boolean isPath(BinaryTree<T> tree, String path) {
-    // TODO: Implementa la comprobación recursiva de si existe un camino en el árbol que siga la secuencia dada
-    return false;
+    if (tree.isEmpty() && path.isEmpty()) {
+      return true;
+    }
+
+    if ((tree.isEmpty() ^ path.isEmpty()) || !tree.getRootValue().equals(String.valueOf(path.charAt(0)))) {
+      return false;
+    }
+
+    if (path.length() > 1) {
+      return isPath(tree.getLeftChild(), path.substring(1)) || isPath(tree.getRightChild(), path.substring(1));
+    }
+
+    return true;
   }
 
   //exercise 9
   public static <T> BinaryTree<T> copyingToLevel(BinaryTree<T> tree, int level) {
-    // TODO: Implementa la copia recursiva del árbol hasta un nivel dado
-    return new LinkedBinaryTree<>();
+    if (tree.isEmpty() || level < 0)
+      return new LinkedBinaryTree<>();
+
+    BinaryTree<T> copy = new LinkedBinaryTree<>(tree.getRootValue());
+    
+    if (level > 0) {
+      copy.setLeftChild(copyingToLevel(tree.getLeftChild(), level - 1));
+      copy.setRightChild(copyingToLevel(tree.getRightChild(), level - 1));
+    }
+
+    return copy;
   }
 
   //exercise 10
   public static <T> boolean isLevelK(BinaryTree<T> tree, T elem, int k) {
-    // TODO: Implementa la comprobación recursiva de si un elemento está en el nivel k del árbol
+    if (tree.isEmpty() || k < 0) {
+      return false;
+    }
+
+    if (tree.getRootValue().equals(elem) && k == 0){
+      return true;
+    }
+
+    if (k > 0) {
+      return isLevelK(tree.getLeftChild(), elem, k - 1) || isLevelK(tree.getRightChild(), elem, k - 1);
+    }
+
     return false;
   }
 }
