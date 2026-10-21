@@ -32,15 +32,17 @@ import es.uvigo.esei.aed2.tree.binary.LinkedBinaryTree;
 
 public class Activity2 {
 
-  //exercise 1
+  // exercise 1
   public static <T> boolean isComplete(BinaryTree<T> tree) {
-    if (!tree.hasLeftChild() && !tree.hasRightChild())
+    if (!tree.hasLeftChild() && !tree.hasRightChild()) {
       return true;
+    }
 
-    if (tree.hasLeftChild() && tree.hasRightChild())
-      return isComplete(tree.getLeftChild()) && isComplete(tree.getRightChild());
+    if (!tree.hasLeftChild() || !tree.hasRightChild()) {
+      return false;
+    }
 
-    return false;
+    return isComplete(tree.getLeftChild()) && isComplete(tree.getRightChild());
   }
 
   // exercise 2
@@ -53,37 +55,42 @@ public class Activity2 {
       return false;
     }
 
-    if (!treeA.getRootValue().equals(treeB.getRootValue())){
+    if (!treeA.getRootValue().equals(treeB.getRootValue())) {
       return false;
     }
 
-    return areIdentical(treeA.getLeftChild(), treeB.getLeftChild()) && areIdentical(treeA.getRightChild(), treeB.getRightChild());
+    return areIdentical(treeA.getLeftChild(), treeB.getLeftChild())
+        && areIdentical(treeA.getRightChild(), treeB.getRightChild());
   }
 
-  //exercise 3
+  // exercise 3
   public static <T> int countNodesInLevel(BinaryTree<T> tree, int level) {
-    if (tree.isEmpty() || level < 0)
+    if (tree.isEmpty() || level < 0) {
       return 0;
+    }
 
-    if (level == 0)
+    if (level == 0){
       return 1;
+    }
 
     return countNodesInLevel(tree.getLeftChild(), level - 1) + countNodesInLevel(tree.getRightChild(), level - 1);
   }
-  
-  // private static <T> int countNodesInLevel(BinaryTree<T> tree, int level, int currLevel) {
-  //   if (tree.isEmpty())
-  //     return 0;
 
-  //   if (currLevel == level)
-  //     return 1;
+  // private static <T> int countNodesInLevel(BinaryTree<T> tree, int level, int
+  // currLevel) {
+  // if (tree.isEmpty())
+  // return 0;
 
-  //   return countNodesInLevel(tree.getLeftChild(), level, currLevel + 1) + countNodesInLevel(tree.getRightChild(), level, currLevel + 1);
+  // if (currLevel == level)
+  // return 1;
+
+  // return countNodesInLevel(tree.getLeftChild(), level, currLevel + 1) +
+  // countNodesInLevel(tree.getRightChild(), level, currLevel + 1);
   // }
 
-  //exercise 4
+  // exercise 4
   public static <T> BinaryTree<T> removeLeaves(BinaryTree<T> tree) {
-    if (tree.isEmpty() || (!tree.hasLeftChild() && !tree.hasRightChild())){
+    if (tree.isEmpty() || (!tree.hasLeftChild() && !tree.hasRightChild())) {
       return new LinkedBinaryTree<>();
     }
 
@@ -95,27 +102,30 @@ public class Activity2 {
     return newTree;
   }
 
-  //exercise 5
+  // exercise 5
   public static <T> int calculateHeight(BinaryTree<T> tree) {
-    if (tree.isEmpty())
+    if (tree.isEmpty()){
       return -1;
+    }
 
-   int leftTreeHeight = calculateHeight(tree.getLeftChild()) + 1;
-   int rightTreeHeight = calculateHeight(tree.getRightChild()) + 1;
-    
-    return leftTreeHeight > rightTreeHeight? leftTreeHeight : rightTreeHeight;
+    int leftTreeHeight = calculateHeight(tree.getLeftChild()) + 1;
+    int rightTreeHeight = calculateHeight(tree.getRightChild()) + 1;
+
+    return Math.max(leftTreeHeight, rightTreeHeight);
   }
 
-  //exercise 6
+  // exercise 6
   public static BinaryTree<String> rebuild(String preorder, String inorder) {
-    if (preorder.isEmpty() || inorder.isEmpty())
+    if (preorder.isEmpty() || inorder.isEmpty()) {
       return new LinkedBinaryTree<>();
+    }
 
     BinaryTree<String> newTree = new LinkedBinaryTree<>(String.valueOf(preorder.charAt(0)));
     int rootInorderIndex = inorder.indexOf(preorder.charAt(0));
-    
+
     if (rootInorderIndex > 0) { // has left child
-      newTree.setLeftChild(rebuild(preorder.substring(1, rootInorderIndex + 1), inorder.substring(0, rootInorderIndex)));
+      newTree
+          .setLeftChild(rebuild(preorder.substring(1, rootInorderIndex + 1), inorder.substring(0, rootInorderIndex)));
     }
 
     if (rootInorderIndex < inorder.length() - 1) { // has right child
@@ -125,7 +135,7 @@ public class Activity2 {
     return newTree;
   }
 
-  //exercise 7
+  // exercise 7
   public static <T extends Comparable<T>> boolean isSelectionTree(BinaryTree<T> tree) {
     if (tree.isEmpty()) {
       return true;
@@ -139,18 +149,15 @@ public class Activity2 {
       T leftValue = tree.getLeftChild().getRootValue();
       T rightValue = tree.getRightChild().getRootValue();
       T smaller = leftValue.compareTo(rightValue) < 0 ? leftValue : rightValue;
-      
-      if (tree.getRootValue().compareTo(smaller) == 0) {
-        return isSelectionTree(tree.getLeftChild()) && isSelectionTree(tree.getRightChild());
-      }
-      else
-        return false;
+
+      return tree.getRootValue().compareTo(smaller) == 0 && isSelectionTree(tree.getLeftChild())
+          && isSelectionTree(tree.getRightChild());
     }
 
     return true;
   }
 
-  //exercise 8
+  // exercise 8
   public static <T> boolean isPath(BinaryTree<T> tree, String path) {
     if (tree.isEmpty() && path.isEmpty()) {
       return true;
@@ -167,13 +174,14 @@ public class Activity2 {
     return true;
   }
 
-  //exercise 9
+  // exercise 9
   public static <T> BinaryTree<T> copyingToLevel(BinaryTree<T> tree, int level) {
-    if (tree.isEmpty() || level < 0)
+    if (tree.isEmpty() || level < 0) {
       return new LinkedBinaryTree<>();
+    }
 
     BinaryTree<T> copy = new LinkedBinaryTree<>(tree.getRootValue());
-    
+
     if (level > 0) {
       copy.setLeftChild(copyingToLevel(tree.getLeftChild(), level - 1));
       copy.setRightChild(copyingToLevel(tree.getRightChild(), level - 1));
@@ -182,13 +190,13 @@ public class Activity2 {
     return copy;
   }
 
-  //exercise 10
+  // exercise 10
   public static <T> boolean isLevelK(BinaryTree<T> tree, T elem, int k) {
     if (tree.isEmpty() || k < 0) {
       return false;
     }
 
-    if (tree.getRootValue().equals(elem) && k == 0){
+    if (tree.getRootValue().equals(elem) && k == 0) {
       return true;
     }
 
