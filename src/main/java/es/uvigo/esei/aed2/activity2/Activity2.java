@@ -112,15 +112,15 @@ public class Activity2 {
       return new LinkedBinaryTree<>();
 
     BinaryTree<String> newTree = new LinkedBinaryTree<>(String.valueOf(preorder.charAt(0)));
-    int rootIndexInorder = inorder.indexOf(preorder.charAt(0));
+    int rootInorderIndex = inorder.indexOf(preorder.charAt(0));
     
-    if (rootIndexInorder > 0) { //has left child
-
+    if (rootInorderIndex > 0) { // has left child
+      newTree.setLeftChild(rebuild(preorder.substring(1, rootInorderIndex + 1), inorder.substring(0, rootInorderIndex)));
     }
 
-    if (rootIndexInorder + 1
-      
-    )
+    if (rootInorderIndex < inorder.length() - 1) { // has right child
+      newTree.setRightChild(rebuild(preorder.substring(rootInorderIndex + 1), inorder.substring(rootInorderIndex + 1)));
+    }
 
     return newTree;
   }

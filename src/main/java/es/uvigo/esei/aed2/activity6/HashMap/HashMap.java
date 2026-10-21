@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.HashSet;
+
+import static java.util.Objects.requireNonNull;
+
+import es.uvigo.esei.aed1.tads.list.IteratorList;
 
 /*-
  * #%L
@@ -36,7 +41,7 @@ import java.util.function.BiConsumer;
 
 import es.uvigo.esei.aed2.map.Map;
 
-public class HashMap<K,V> implements Map<K,V> {
+public class HashMap<K, V> implements Map<K, V> {
   private static final int CAPACITY = 50;
 
   private int size;
@@ -48,51 +53,108 @@ public class HashMap<K,V> implements Map<K,V> {
 
   @SuppressWarnings("unchecked")
   private HashMap(int capacity) throws IllegalArgumentException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    this.size = capacity;
+    map = (List<Pair<K, V>>[]) new List[capacity];
+
+    for (int i = 0; i < map.length; i++) {
+      map[i] = new LinkedList<>();
+    }
   }
 
   private int calculateIndex(K key) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return Math.abs(key.hashCode()) % 50;
   }
 
   @Override
   public int size() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    int size = 0;
+
+    for (List<Pair<K, V>> list : map) {
+      size += list.size();
+    }
+
+    return size;
   }
 
   @Override
   public V get(K key) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    int index = calculateIndex(key);
+
+    if (!map[index].isEmpty())
+      return map[index].getFirst().getValue();
+    else
+      return null;
   }
 
   @Override
   public void add(K key, V value) throws NullPointerException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    requireNonNull(key, "Null keys are not allowed!");
+
+    int index = calculateIndex(key);
+    List<Pair<K, V>> indexList = map[index];
+
+    for (int i = 0; i < indexList.size(); i++) {
+      if (indexList.get(i).getKey().equals(key)) {
+        indexList.get(i).setValue(value);
+        return;
+      }
+    }
+
+    indexList.addLast(new Pair<>(key, value));
   }
 
   @Override
   public V remove(K key) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    int index = calculateIndex(key);
+    List<Pair<K, V>> list = map[index];
+    int removeIndex = -1;
+
+    for (int i = 0; i < list.size(); i++) {
+      if (list.get(i).getKey().equals(key)) {
+        removeIndex = i;
+        break;
+      }   
+    }
+
+    return list.remove(removeIndex).getValue();
   }
 
   @Override
   public Set<K> getKeys() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    Set<K> keysSet = new HashSet<>();
+
+    for (int i = 0; i < map.length; i++) {
+      for (int j = 0; j < map[i].size(); j++) {
+        keysSet.add(map[i].get(j).getKey());
+      }
+    }
+
+    return keysSet;
   }
 
   @Override
   public Iterator<V> getValues() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    LinkedList<V> values = new LinkedList<>();
+   
+    for (List<Pair<K, V>> list : map) {
+      for (Pair<K, V> pair : list) {
+        values.add(pair.getValue());
+      }
+    }
+      
+    return values.iterator();
   }
 
   @Override
   public void clear() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    for (List<Pair<K,V>> list : map) {
+      list.clear();
+    }
   }
 
   @Override
-  public void forEach(BiConsumer<K, V> action){
-    throw new UnsupportedOperationException("Not supported yet.");
+  public void forEach(BiConsumer<K, V> action) {
+    // action.
   }
 
   private static class Pair<K, V> {
@@ -132,5 +194,5 @@ public class HashMap<K,V> implements Map<K,V> {
       return Objects.hashCode(this.k) ^ Objects.hashCode(this.v);
     }
   }
-  
+
 }

@@ -1,5 +1,8 @@
 package es.uvigo.esei.aed2.activity6.anagrams;
 
+import es.uvigo.esei.aed2.map.Map;
+import es.uvigo.esei.aed2.map.HashMap;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
