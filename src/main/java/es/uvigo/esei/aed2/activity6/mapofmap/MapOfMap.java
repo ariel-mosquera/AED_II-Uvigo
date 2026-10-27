@@ -34,13 +34,11 @@ import es.uvigo.esei.aed2.graph.Vertex;
 import es.uvigo.esei.aed2.map.Map;
 import es.uvigo.esei.aed2.map.HashMap;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
+
+import static java.util.Objects.requireNonNull;
 
 public class MapOfMap<T, E> implements Graph<T, E> {
 
