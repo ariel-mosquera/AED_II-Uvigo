@@ -1,6 +1,5 @@
 package es.uvigo.esei.aed2.activity6.mapofmap;
 
-
 /*-
  * #%L
  * AEDII - Activities

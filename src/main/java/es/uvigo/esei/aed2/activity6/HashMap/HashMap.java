@@ -10,8 +10,6 @@ import java.util.HashSet;
 
 import static java.util.Objects.requireNonNull;
 
-import es.uvigo.esei.aed1.tads.list.IteratorList;
-
 /*-
  * #%L
  * AEDII - Activities
@@ -53,11 +51,11 @@ public class HashMap<K, V> implements Map<K, V> {
 
   @SuppressWarnings("unchecked")
   private HashMap(int capacity) throws IllegalArgumentException {
-    this.size = capacity;
-    map = (List<Pair<K, V>>[]) new List[capacity];
+    this.map = (List<Pair<K, V>>[]) new List[capacity];
+    this.size = 0;
 
-    for (int i = 0; i < map.length; i++) {
-      map[i] = new LinkedList<>();
+    for (int i = 0; i < this.map.length; i++) {
+      this.map[i] = new LinkedList<>();
     }
   }
 
@@ -67,31 +65,31 @@ public class HashMap<K, V> implements Map<K, V> {
 
   @Override
   public int size() {
-    int size = 0;
-
-    for (List<Pair<K, V>> list : map) {
-      size += list.size();
-    }
-
-    return size;
+    return this.size;
   }
 
   @Override
   public V get(K key) {
+    if (key == null) {
+      return null;
+    }
+
     int index = calculateIndex(key);
 
-    if (!map[index].isEmpty())
-      return map[index].getFirst().getValue();
-    else
-      return null;
+    for (Pair<K,V> pair : map[index]) {
+      if (pair.getKey().equals(key)) {
+        return pair.getValue();
+      }
+    }
+
+    return null;
   }
 
   @Override
   public void add(K key, V value) throws NullPointerException {
-    requireNonNull(key, "Null keys are not allowed!");
-
-    int index = calculateIndex(key);
-    List<Pair<K, V>> indexList = map[index];
+    requireNonNull(value);
+    int index = calculateIndex(requireNonNull(key));
+    List<Pair<K, V>> indexList = this.map[index];
 
     for (int i = 0; i < indexList.size(); i++) {
       if (indexList.get(i).getKey().equals(key)) {
@@ -101,31 +99,37 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     indexList.addLast(new Pair<>(key, value));
+    this.size++;
   }
 
   @Override
   public V remove(K key) {
-    int index = calculateIndex(key);
-    List<Pair<K, V>> list = map[index];
+    int index = (key == null)? -1 : calculateIndex(key);
+    int listSize = (index == -1)? -1 : this.map[index].size();
     int removeIndex = -1;
 
-    for (int i = 0; i < list.size(); i++) {
-      if (list.get(i).getKey().equals(key)) {
+    for (int i = 0; i < listSize; i++) {
+      if (this.map[index].get(i).getKey().equals(key)) {
         removeIndex = i;
         break;
-      }   
+      }
     }
 
-    return list.remove(removeIndex).getValue();
+    if (removeIndex == -1) {
+      return null;
+    }
+
+    this.size--;
+    return this.map[index].remove(removeIndex).getValue();
   }
 
   @Override
   public Set<K> getKeys() {
     Set<K> keysSet = new HashSet<>();
 
-    for (int i = 0; i < map.length; i++) {
-      for (int j = 0; j < map[i].size(); j++) {
-        keysSet.add(map[i].get(j).getKey());
+    for (List<Pair<K, V>> list : this.map) {
+      for (Pair<K, V> pair : list) {
+        keysSet.add(pair.getKey());
       }
     }
 
@@ -135,26 +139,31 @@ public class HashMap<K, V> implements Map<K, V> {
   @Override
   public Iterator<V> getValues() {
     LinkedList<V> values = new LinkedList<>();
-   
-    for (List<Pair<K, V>> list : map) {
+
+    for (List<Pair<K, V>> list : this.map) {
       for (Pair<K, V> pair : list) {
         values.add(pair.getValue());
       }
     }
-      
+
     return values.iterator();
   }
 
   @Override
   public void clear() {
-    for (List<Pair<K,V>> list : map) {
+    for (List<Pair<K, V>> list : this.map) {
       list.clear();
     }
+    this.size = 0;
   }
 
   @Override
   public void forEach(BiConsumer<K, V> action) {
-    // action.
+    for (List<Pair<K, V>> list : this.map) {
+      for (Pair<K, V> pair : list) {
+        action.accept(pair.getKey(), pair.getValue());
+      }
+    }
   }
 
   private static class Pair<K, V> {
