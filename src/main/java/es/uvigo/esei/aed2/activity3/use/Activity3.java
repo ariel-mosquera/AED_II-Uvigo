@@ -34,10 +34,24 @@ import java.util.List;
 public class Activity3 {
   // exercise a)
   public static <T> T getParent(BinaryTree<T> tree, T value) {
-    if (tree.isEmpty() || (!tree.hasLeftChild() && !tree.hasRightChild()))
+    if (tree.isEmpty() || tree.getRootValue().equals(value)) {
       return null;
-    // TODO: Terminar de implementar el método
-    return null;
+    }
+
+    BinaryTree<T> leftChild = tree.getLeftChild();
+    BinaryTree<T> rightChild = tree.getRightChild();
+
+    if ((!rightChild.isEmpty() && rightChild.getRootValue().equals(value)) || (!leftChild.isEmpty() && leftChild.getRootValue().equals(value))) {
+      return tree.getRootValue();
+    }
+
+    T left = getParent(leftChild, value);
+
+    if (left != null) {
+      return left;
+    }
+
+    return getParent(rightChild, value);
   }
 
   // exercise b)
@@ -51,7 +65,7 @@ public class Activity3 {
 
     tree.forEachPreOrder(n -> {
       if (n % 2 == 0)
-        evenNumbers.addLast(n);
+        evenNumbers.add(n);
     });
 
     return evenNumbers;
@@ -59,9 +73,14 @@ public class Activity3 {
 
   // exercise d)
   public static void printValuesHigherThan30(BinaryTree<Integer> tree) {
+    if (tree.isEmpty()) {
+      return;
+    }
+    
     tree.forEachLevelOrder(n -> {
-      if (n > 30)
-        System.out.println();
+      if (n > 30) {
+        System.out.println(n);
+      }
     });
   }
 }
