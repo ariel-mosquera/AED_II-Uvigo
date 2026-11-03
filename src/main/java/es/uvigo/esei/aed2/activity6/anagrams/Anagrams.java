@@ -39,29 +39,29 @@ import java.util.Set;
  */
 
 public class Anagrams {
-  //TODO: incompleto
   public static Set<Set<String>> getAnagrams(List<String> words) {
-    Set<Set<String>> collection = new HashSet<>();
+    Set<Set<String>> anagramGroups = new HashSet<>();
     Map<String, List<String>> anagramsMap = new HashMap<>();
 
     for (String word : words) {
       char[] letters = word.toCharArray();
       Arrays.sort(letters);
       String key = new String(letters);
-      List<String> anagrams = anagramsMap.get(key);
+      List<String> anagramsList = anagramsMap.get(key);
       
-      if (anagrams == null) {
-        anagramsMap.add(key, new LinkedList<>());
-        anagrams = anagramsMap.get(key);
+      if (anagramsList == null) {
+        anagramsList = new LinkedList<>();
+        anagramsMap.add(key, anagramsList);
       }
 
-      anagrams.add(word);
+      anagramsList.add(word);
     }
 
-    Iterator<String> keys = anagramsMap.getKeys().iterator();
-    
+    anagramsMap.forEach((key, listOfWords) -> {
+     anagramGroups.add(new HashSet<>(listOfWords));
+    });
 
-    return collection;
+    return anagramGroups;
   }
 
 }
