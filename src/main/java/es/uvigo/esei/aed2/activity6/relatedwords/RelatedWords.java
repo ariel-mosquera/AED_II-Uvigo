@@ -30,6 +30,12 @@ package es.uvigo.esei.aed2.activity6.relatedwords;
 import java.util.List;
 
 import es.uvigo.esei.aed2.graph.Graph;
+import es.uvigo.esei.aed2.graph.Vertex;
+import es.uvigo.esei.aed2.graph.Edge;
+import es.uvigo.esei.aed2.graph.AdjacencyList;
+
+import es.uvigo.esei.aed2.map.Map;
+import es.uvigo.esei.aed2.map.HashMap;
 
 public class RelatedWords {
   /**
@@ -40,6 +46,14 @@ public class RelatedWords {
    */
   public static Graph<String, Integer> buildGraph(List<String> words) {
     // TODO: Implementa la construcción del grafo de palabras relacionadas
+    return null;
+  }
+
+  private static Map<String, List<String>> construirMapa(List<String> palabras) {
+    return null;
+  }
+
+  private static Graph<String, Integer> generarGrafo(Map<String, List<String>> mapa) {
     return null;
   }
 }

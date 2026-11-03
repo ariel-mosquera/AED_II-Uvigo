@@ -1,9 +1,13 @@
 package es.uvigo.esei.aed2.activity6.anagrams;
 
 import es.uvigo.esei.aed2.map.Map;
-import es.uvigo.esei.aed2.map.HashMap;
+import es.uvigo.esei.aed2.activity6.HashMap.HashMap;
+// import es.uvigo.esei.aed2.map.HashMap;
 
+import java.util.Iterator;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -35,10 +39,29 @@ import java.util.Set;
  */
 
 public class Anagrams {
-
+  //TODO: incompleto
   public static Set<Set<String>> getAnagrams(List<String> words) {
-    // TODO: Implementa la obtención de los conjuntos de anagramas a partir de la agrupación
-    return null;
+    Set<Set<String>> collection = new HashSet<>();
+    Map<String, List<String>> anagramsMap = new HashMap<>();
+
+    for (String word : words) {
+      char[] letters = word.toCharArray();
+      Arrays.sort(letters);
+      String key = new String(letters);
+      List<String> anagrams = anagramsMap.get(key);
+      
+      if (anagrams == null) {
+        anagramsMap.add(key, new LinkedList<>());
+        anagrams = anagramsMap.get(key);
+      }
+
+      anagrams.add(word);
+    }
+
+    Iterator<String> keys = anagramsMap.getKeys().iterator();
+    
+
+    return collection;
   }
 
 }

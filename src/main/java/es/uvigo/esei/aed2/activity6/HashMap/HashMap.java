@@ -138,16 +138,41 @@ public class HashMap<K, V> implements Map<K, V> {
 
   @Override
   public Iterator<V> getValues() {
-    LinkedList<V> values = new LinkedList<>();
+    return new Iterator<V>() {
+      private int mapIndex = 0;
+      private Iterator<Pair<K, V>> listItr = map[mapIndex].iterator();
 
-    for (List<Pair<K, V>> list : this.map) {
-      for (Pair<K, V> pair : list) {
-        values.add(pair.getValue());
+      private void prepareForNext() {
+        while (!listItr.hasNext() && mapIndex < map.length - 1) {
+          listItr = map[++mapIndex].iterator();
+        }
       }
-    }
 
-    return values.iterator();
+      @Override
+      public boolean hasNext() {
+        prepareForNext();
+        return listItr.hasNext();
+      }
+
+      @Override
+      public V next() {
+        return listItr.next().getValue();
+      }
+    };
   }
+
+  // @Override
+  // public Iterator<V> getValues() {
+  //   LinkedList<V> values = new LinkedList<>();
+
+  //   for (List<Pair<K, V>> list : this.map) {
+  //     for (Pair<K, V> pair : list) {
+  //       values.add(pair.getValue());
+  //     }
+  //   }
+
+  //   return values.iterator();
+  // }
 
   @Override
   public void clear() {

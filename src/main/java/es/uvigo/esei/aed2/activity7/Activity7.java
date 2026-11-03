@@ -36,50 +36,110 @@ import es.uvigo.esei.aed2.graph.Vertex;
 import es.uvigo.esei.aed2.map.Map;
 import es.uvigo.esei.aed2.map.HashMap;
 import es.uvigo.esei.aed1.tads.queue.LinkedQueue;
-import es.uvigo.esei.aed1.tads.queue.Queue;  
-
+import es.uvigo.esei.aed1.tads.queue.Queue;
 
 public class Activity7 {
 
-  //exercise 1
+  // exercise 1
   public static <T, E> Set<Vertex<T>> getPredecessors(Graph<T, E> graph, Vertex<T> vertex) {
-    // TODO: Implementa la obtención de predecesores de un vértice en el grafo
-    return new HashSet<>();
+    Set<Vertex<T>> predSet = new HashSet<>();
+    Set<Vertex<T>> vertices = graph.getVertices();
+
+    for (Vertex<T> v : vertices) {
+      if (graph.getAdjacentsVertex(v).contains(vertex)) {
+        predSet.add(v);
+      }
+    }
+
+    return predSet;
   }
 
-  //exercise 2
+  // exercise 2
   public static <T, E> boolean isRegular(Graph<T, E> graph) {
-    // TODO: Implementa la comprobación de si el grafo es regular
-    return false;
+    if (graph.isEmpty()) {
+      return true;
+    }
+
+    int numOfAdj = -1;
+
+    for (Vertex<T> v : graph.getVertices()) {
+      if (numOfAdj == -1) {
+        numOfAdj = graph.getAdjacentsVertex(v).size();
+
+      } else if (numOfAdj != graph.getAdjacentsVertex(v).size()) {
+        return false;
+
+      }
+    }
+
+    return true;
   }
-  
-  //exercise 3
+
+  // exercise 3
   public static <T, E> boolean isConnectedFromVertex(Graph<T, E> graph, Vertex<T> vertex) {
-    // TODO: Implementa la comprobación de si el grafo es conexo desde un vértice
+    if (graph.isEmpty()) {
+      return false;
+    }
+    
+    Set<Vertex<T>> visited = new HashSet<>();
+
+    depthFirstSearch(graph, vertex, visited);
+
+    return visited.size() == graph.getVertices().size();
+  }
+
+  private static <T,E> void depthFirstSearch(Graph<T,E> graph, Vertex<T> vertex, Set<Vertex<T>> visited) {
+    visited.add(vertex);
+    for (Vertex<T> adjVertex : graph.getAdjacentsVertex(vertex)) {
+      if (!visited.contains(adjVertex)) {
+        depthFirstSearch(graph, adjVertex, visited);
+      }
+    }
+  }
+
+  // exercise 4
+  public static <T, E> boolean thereIsPathBetweenVertices(Graph<T, E> graph, Vertex<T> source, Vertex<T> target) {
+    if (graph.isEmpty()) {
+      return false;
+    }
+
+    Set<Vertex<T>> visited = new HashSet<>();
+
+    depthFirstSearch(graph, source, visited);
+
+    return visited.contains(target);
+  }
+
+  //TODO: exercise 5 (incomplete)
+  public static <T, E> boolean isACycle(Graph<T, E> graph, List<Vertex<T>> path) {
+    if (graph.isEmpty() || path.isEmpty()) {
+      return false;
+    }
+
+    if (path.getFirst().equals(path.getLast())) {
+      int pathSize = path.size();
+
+      for (int i = 0; i < pathSize - 1; i++) {
+        if (!graph.getAdjacentsVertex(path.get(i)).contains(path.get(i + 1))) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
     return false;
   }
 
-  //exercise 4
-  public static <T, E> boolean thereIsPathBetweenVertices(Graph<T, E> graph, Vertex<T> source, Vertex<T> target) {
-    // TODO: Implementa la comprobación de si existe un camino entre dos vértices
-    return false;
-  }
-  
-  //exercise 5
-  public static <T, E> boolean isACycle(Graph<T, E> graph, List<Vertex<T>> path) {
-    // TODO: Implementa la comprobación de si una lista de vértices forma un ciclo en el grafo
-    return false;
-  }
-  
-  //exercise 6
-  public static <T,E> int numberOfConnectedComponents(Graph<T,E> graph){
+  // exercise 6
+  public static <T, E> int numberOfConnectedComponents(Graph<T, E> graph) {
     // TODO: Implementa el cálculo del número de componentes conexas en el grafo
     return 0;
-  } 
+  }
 
-  //exercise 7
+  // exercise 7
   public static <T, E> Map<Vertex<T>, Integer> BFSShortestPath(Graph<T, E> graph, Vertex<T> start) {
-      // TODO: Implementa el cálculo del número de componentes conexas en el grafo
+    // TODO: Implementa el cálculo del número de componentes conexas en el grafo
     return null;
-  }  
+  }
 }
