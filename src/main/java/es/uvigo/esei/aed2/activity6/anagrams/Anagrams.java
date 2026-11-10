@@ -4,7 +4,6 @@ import es.uvigo.esei.aed2.map.Map;
 import es.uvigo.esei.aed2.activity6.HashMap.HashMap;
 // import es.uvigo.esei.aed2.map.HashMap;
 
-import java.util.Iterator;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
