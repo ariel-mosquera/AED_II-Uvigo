@@ -80,7 +80,7 @@ public class Activity7 {
     if (graph.isEmpty()) {
       return false;
     }
-    
+
     Set<Vertex<T>> visited = new HashSet<>();
 
     depthFirstSearch(graph, vertex, visited);
@@ -88,7 +88,7 @@ public class Activity7 {
     return visited.size() == graph.getVertices().size();
   }
 
-  private static <T,E> void depthFirstSearch(Graph<T,E> graph, Vertex<T> vertex, Set<Vertex<T>> visited) {
+  private static <T, E> void depthFirstSearch(Graph<T, E> graph, Vertex<T> vertex, Set<Vertex<T>> visited) {
     visited.add(vertex);
     for (Vertex<T> adjVertex : graph.getAdjacentsVertex(vertex)) {
       if (!visited.contains(adjVertex)) {
@@ -105,41 +105,91 @@ public class Activity7 {
 
     Set<Vertex<T>> visited = new HashSet<>();
 
-    depthFirstSearch(graph, source, visited);
-
-    return visited.contains(target);
+    return thereIsPathBetweenVertices(graph, source, target, visited);
   }
 
-  //TODO: exercise 5 (incomplete)
-  public static <T, E> boolean isACycle(Graph<T, E> graph, List<Vertex<T>> path) {
-    if (graph.isEmpty() || path.isEmpty()) {
-      return false;
+  private static <T, E> boolean thereIsPathBetweenVertices(Graph<T, E> graph, Vertex<T> source, Vertex<T> target,
+      Set<Vertex<T>> visited) {
+    if (source.equals(target)) {
+      return true;
     }
 
-    if (path.getFirst().equals(path.getLast())) {
-      int pathSize = path.size();
+    visited.add(source);
 
-      for (int i = 0; i < pathSize - 1; i++) {
-        if (!graph.getAdjacentsVertex(path.get(i)).contains(path.get(i + 1))) {
-          return false;
-        }
+    for (Vertex<T> adjVertex : graph.getAdjacentsVertex(source)) {
+      if (!visited.contains(adjVertex) && thereIsPathBetweenVertices(graph, adjVertex, target, visited)) {
+        return true;
       }
-
-      return true;
     }
 
     return false;
   }
 
+  // TODO: exercise 5 (incomplete)
+  public static <T, E> boolean isACycle(Graph<T, E> graph, List<Vertex<T>> path) {
+    if (!path.getFirst().equals(path.getLast()) || graph.isEmpty() || path.isEmpty()) {
+      return false;
+    }
+
+    int pathSize = path.size();
+
+    if (pathSize == 1) {
+      return graph.getAdjacentsVertex(path.getFirst()).contains(path.getFirst());
+    }
+
+    Set<Vertex<T>> visited = new HashSet<>();
+
+    for (int i = 0; i < pathSize - 1; i++) {
+      Vertex<T> curr = path.get(i);
+
+      if (visited.contains(curr) || !graph.getAdjacentsVertex(curr).contains(path.get(i + 1))) {
+        return false;
+      }
+
+      visited.add(curr);
+    }
+
+    return true;
+  }
+
   // exercise 6
   public static <T, E> int numberOfConnectedComponents(Graph<T, E> graph) {
-    // TODO: Implementa el cálculo del número de componentes conexas en el grafo
-    return 0;
+    Set<Vertex<T>> visited = new HashSet<>();
+    int sum = 0;
+
+    for (Vertex<T> vertex : graph.getVertices()) {
+      if (!visited.contains(vertex)) {
+        sum++;
+        depthFirstSearch(graph, vertex, visited);
+      }
+    }
+
+    return sum;
   }
 
   // exercise 7
   public static <T, E> Map<Vertex<T>, Integer> BFSShortestPath(Graph<T, E> graph, Vertex<T> start) {
-    // TODO: Implementa el cálculo del número de componentes conexas en el grafo
-    return null;
+    Queue<Vertex<T>> toExplore = new LinkedQueue<>();
+    Set<Vertex<T>> visited = new HashSet<>();
+    Map<Vertex<T>, Integer> shortestPaths = new HashMap<>();
+    
+    toExplore.add(start);
+    visited.add(start);
+    shortestPaths.add(start, 0);
+
+    do {
+      Vertex<T> current = toExplore.remove();
+      int currentDistance = shortestPaths.get(current);
+      
+      for (Vertex<T> adj : graph.getAdjacentsVertex(current)) {
+        if (!visited.contains(adj)) {
+          toExplore.add(adj);
+          visited.add(adj);
+          shortestPaths.add(adj, currentDistance + 1);
+        }
+      }
+    } while (!toExplore.isEmpty());
+
+    return shortestPaths;
   }
 }
